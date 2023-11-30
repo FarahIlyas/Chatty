@@ -48,12 +48,15 @@ const loginUser = async (req, res) => {
     try {
         const {username, password} = req.body;
         // finding user whether it exists in DB or not?
-        const user = await User.findOne({username});
+        const user = await User.findOne({ username });
+        
+        if(!user) return res.status(400).json({ message: "Invalid username or password" });
+        
         // comparing password(password) of user with password stored in DB(user.password).
-        const isPasswordCorrect = await bcrypt.compare(password, user.password); I
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
         
         // checking credentials whether true or false.
-        if(!user || !isPasswordCorrect) return res.status(400).json({ message: "Invalid username or password" });
+        if(!isPasswordCorrect) return res.status(400).json({ message: "Invalid username or password" });
         
         generateTokenAndSetCookie(user._id, res);
         
@@ -62,12 +65,24 @@ const loginUser = async (req, res) => {
             name: user.name,
             email: user.email,
             username: user.username,
-        })
+        });
     } 
-    catch (error) {
-        res.status(500).json({message: error.message });
-        console.log("Error in loginUser: ", error.message);
+    catch (err) {
+        res.status(500).json({ message: err.message });
+        console.log("Error in loginUser: ", err.message);
     }
 };
 
-export { signupUser, loginUser }
+
+const logoutUser = async (req, res) => {
+    try {
+        res.cookie("jwt","",{maxAge:1});
+        res.status(200).json({ message: "User logged out Successfully" });
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+        console.log("Error in loginUser: ", err.message);
+    }
+};
+
+export { signupUser, loginUser, logoutUser };
