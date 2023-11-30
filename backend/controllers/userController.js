@@ -85,4 +85,46 @@ const logoutUser = async (req, res) => {
     }
 };
 
-export { signupUser, loginUser, logoutUser };
+
+const followUnFollowUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userToModify = await User.findById(id);   // user which will be followed or unfollowed.
+        const currentUser = await User.findById(req.user._id);    // user which is loggedin to modify its followers. got it from protecRoute req object.
+
+        if(id == req.user._id) return res.status(400).json({ message: "You cannot follow/unfollow yourseld" });
+
+        if(!userToModify || !currentUser) return res.status(400).json({ message: "User not found" });
+
+        const isFollowing = currentUser.following.includes(id);
+
+        if(isFollowing){
+            // Unfollow user 
+            
+            // modify curent user following.
+            await User.findByIdAndUpdate(req.user._id, { $pull: { following: id} } );
+            
+            //modify followers of userToModify
+            await User.findByIdAndUpdate(id, { $pull: { followers: req.user._id} } );
+            
+            res.status(200).json({ message: "User unfollowed Successfully" });
+        }
+        else{
+            // Follow User
+            
+            // modify curent user following.
+            await User.findByIdAndUpdate(req.user._id, { $push: { following: id} } );
+            
+            //modify followers of userToModify
+            await User.findByIdAndUpdate(id, { $push: { followers: req.user._id} } );
+
+            res.status(200).json({ message: "User followed Successfully" });
+        }
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+        console.log("Error in followUnFollowUser: ", err.message);
+    }
+};
+
+export { signupUser, loginUser, logoutUser, followUnFollowUser };
