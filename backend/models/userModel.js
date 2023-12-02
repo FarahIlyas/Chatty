@@ -45,5 +45,6 @@ const userSchema = mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 // it will create users in your database
 // we will call the 'User' and use "userSchema" to create a new user.
+// mongoose converts "User" into users for DB.
 
 export default User;
