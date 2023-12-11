@@ -3,7 +3,9 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 import { ChakraProvider } from "@chakra-ui/provider";
-// import { ChakraProvider } from "@chakra-ui/react";
+import { mode } from "@chakra-ui/theme-tools";
+import { extendTheme } from "@chakra-ui/theme-utils";
+import { ColorModeScript } from "@chakra-ui/color-mode";
 
 const styles = {
   global: (props) => ({
@@ -26,7 +28,7 @@ const colors = {
   },
 };
 
-const theme = entendTheme({ config, styles, colors });
+const theme = extendTheme({ config, styles, colors });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
