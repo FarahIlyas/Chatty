@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './index.css';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/provider';
 import { BrowserRouter } from "react-router-dom";
 import { mode } from '@chakra-ui/theme-tools';
 import { extendTheme } from '@chakra-ui/theme-utils';
@@ -39,5 +39,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <App />
       </ChakraProvider>
     </BrowserRouter>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
