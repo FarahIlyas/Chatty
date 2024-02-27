@@ -4,9 +4,10 @@ import { Box, Flex, Text } from "@chakra-ui/layout";
 import { BsThreeDots } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import Actions from "./Actions";
-// import { useState } from "react";
+import { useState } from "react";
 
-const UserPost = () => {
+const UserPost = ({ postImg, postTitle, likes, replies }) => {
+  const [liked, setLiked] = useState(false);
   return (
     <Link to={"/markzuckerberg/post/1"}>
       <Flex gap={3} mb={4} py={5}>
@@ -59,19 +60,30 @@ const UserPost = () => {
             </Flex>
           </Flex>
 
-          <Text fontSize={"sm"}>This is my first post</Text>
-
-          <Box
-            borderRadius={6}
-            overflow={"hidden"}
-            border={"1px solid"}
-            borderColor={"gray.light"}
-          >
-            <Image src="/post1.png" w={"full"} />
-          </Box>
+          <Text fontSize={"sm"}>{postTitle}</Text>
+          {postImg && (
+            <Box
+              borderRadius={6}
+              overflow={"hidden"}
+              border={"1px solid"}
+              borderColor={"gray.light"}
+            >
+              <Image src={postImg} w={"full"} />
+            </Box>
+          )}
 
           <Flex gap={3} my={1}>
-            <Actions />
+            <Actions liked={liked} setLiked={setLiked} />
+          </Flex>
+
+          <Flex gap={2} alignItems={"center"}>
+            <Text color={"gray.light"} fontSize={"sm"}>
+              {replies} replies
+            </Text>
+            <Box w={0.5} h={0.5} borderRadius={"full"} bg={"gray.light"}></Box>
+            <Text color={"gray.light"} fontSize={"sm"}>
+              {likes} likes
+            </Text>
           </Flex>
         </Flex>
       </Flex>
